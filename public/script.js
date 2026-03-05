@@ -119,7 +119,7 @@ const lang = languageSelect.value;
 
 const code = editor.getValue();
 
-/* JAVA dynamic */
+/* JAVA dynamic filename */
 
 if(lang==="java"){
 
@@ -137,7 +137,7 @@ fileNameBox.textContent = "Main.java";
 
 }
 
-/* STATIC FILES */
+/* STATIC FILENAMES */
 
 if(lang==="python"){
 fileNameBox.textContent="main.py";
@@ -183,6 +183,12 @@ input:inputBox.value
 
 });
 
+/* If server still waking */
+
+if(!res.ok){
+throw new Error("Server not ready");
+}
+
 const result = await res.json();
 
 outputBox.textContent = result.output || "";
@@ -191,7 +197,9 @@ outputBox.scrollTop = outputBox.scrollHeight;
 
 }catch(err){
 
-outputBox.textContent="⚠️ Server waking up... Please wait 30 seconds and try again.";
+outputBox.textContent="⚠️ Server waking up... retrying in 5 seconds";
+
+setTimeout(runCode,5000);
 
 }
 
