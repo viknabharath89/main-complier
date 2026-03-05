@@ -1,106 +1,146 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
-<title>Vikna AI Compiler</title>
+<title>Online Compiler</title>
 
-<link rel="stylesheet" href="style.css">
+<style>
 
-<script src="https://unpkg.com/monaco-editor@0.45.0/min/vs/loader.js"></script>
+body{
+margin:0;
+font-family:Arial;
+background:#1e1e1e;
+color:white;
+display:flex;
+flex-direction:column;
+height:100vh;
+}
 
+/* top bar */
+
+.topbar{
+display:flex;
+align-items:center;
+padding:10px;
+background:#252526;
+gap:10px;
+}
+
+#language{
+padding:6px;
+background:#1e1e1e;
+color:white;
+border:1px solid #444;
+}
+
+#filename{
+color:#9cdcfe;
+font-size:14px;
+}
+
+#runBtn{
+padding:6px 14px;
+background:#0e639c;
+border:none;
+color:white;
+cursor:pointer;
+}
+
+#runBtn:hover{
+background:#1177bb;
+}
+
+/* editor */
+
+#editor{
+flex:1;
+}
+
+/* bottom panel */
+
+.bottom{
+display:flex;
+height:180px;
+border-top:1px solid #333;
+}
+
+.panel{
+flex:1;
+display:flex;
+flex-direction:column;
+}
+
+.panel-title{
+background:#252526;
+padding:6px 10px;
+font-size:13px;
+}
+
+textarea{
+flex:1;
+background:#1e1e1e;
+color:white;
+border:none;
+outline:none;
+padding:8px;
+font-family:monospace;
+resize:none;
+}
+
+#output{
+flex:1;
+background:#111;
+color:#00ff9c;
+padding:10px;
+overflow:auto;
+font-family:monospace;
+}
+
+</style>
 </head>
 
 <body>
 
-<div class="container">
+<!-- TOP BAR -->
 
-<!-- LEFT PANEL -->
+<div class="topbar">
 
-<div id="leftPanel">
+<select id="language"></select>
 
-<h1 class="logo">⚡ CO(DE) PILOT</h1>
+<div id="filename"></div>
 
-<div class="aiCard">
-
-<h2>🤖 AI Assistant</h2>
-
-<p>
-Future AI coding assistant will help you:
-</p>
-
-<ul>
-<li>Explain code</li>
-<li>Fix bugs</li>
-<li>Optimize algorithms</li>
-<li>Generate test cases</li>
-<li>Convert languages</li>
-</ul>
-
-<button class="aiBtn">Coming Soon</button>
+<button id="runBtn">Run ▶</button>
 
 </div>
 
-<div class="tips">
 
-<h3>💡 Coding Tips</h3>
-
-<p>
-Always think about <b>time complexity</b>.
-</p>
-
-<p>
-Prefer <b>O(log n)</b> algorithms over <b>O(n²)</b>.
-</p>
-
-</div>
-
-</div>
-
-<!-- RIGHT PANEL -->
-
-<div id="rightPanel">
-
-<div class="header">
-
-<select id="language">
-<option value="java">Java</option>
-<option value="python">Python</option>
-<option value="c">C</option>
-<option value="cpp">C++</option>
-</select>
-
-<button id="runBtn">▶ Run Code</button>
-
-</div>
-
-<div id="filename">Main.java</div>
+<!-- EDITOR -->
 
 <div id="editor"></div>
 
-<div class="ioPanel">
 
-<div class="inputBox">
+<!-- INPUT OUTPUT -->
 
-<h3>Input</h3>
+<div class="bottom">
 
-<textarea id="input" placeholder="Enter program input here..."></textarea>
-
+<div class="panel">
+<div class="panel-title">Input</div>
+<textarea id="input" placeholder="Program input..."></textarea>
 </div>
 
-<div class="outputBox">
-
-<h3>Output</h3>
-
+<div class="panel">
+<div class="panel-title">Output</div>
 <pre id="output"></pre>
-
 </div>
 
 </div>
 
-</div>
 
-</div>
+<!-- MONACO LOADER -->
+
+<script src="https://unpkg.com/monaco-editor@0.45.0/min/vs/loader.js"></script>
+
+<!-- YOUR SCRIPT -->
 
 <script src="script.js"></script>
 

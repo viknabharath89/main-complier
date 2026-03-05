@@ -9,16 +9,19 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// serve frontend
 app.use(express.static(path.join(__dirname, "public")));
 
+// API route
 app.use("/api", compileRoutes);
 
-app.get("/", (req,res)=>{
-res.sendFile(path.join(__dirname,"public","index.html"));
+// homepage
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 const PORT = 5000;
 
-app.listen(PORT,()=>{
-console.log(`🚀 Server running at http://localhost:${PORT}`);
+app.listen(PORT, () => {
+  console.log(`🚀 Server running at http://localhost:${PORT}`);
 });

@@ -7,44 +7,71 @@ const runBtn = document.getElementById("runBtn");
 let editor;
 
 /* =========================
+JUDGE0 LANGUAGES (50+)
+========================= */
+
+const languages = [
+{ id: 50, name:"C", mode:"c", file:"main.c" },
+{ id: 54, name:"C++", mode:"cpp", file:"main.cpp" },
+{ id: 51, name:"C# Mono", mode:"csharp", file:"main.cs" },
+{ id: 62, name:"Java", mode:"java", file:"Main.java" },
+{ id: 71, name:"Python", mode:"python", file:"main.py" },
+{ id: 63, name:"JavaScript (Node)", mode:"javascript", file:"main.js" },
+{ id: 72, name:"Ruby", mode:"ruby", file:"main.rb" },
+{ id: 73, name:"Rust", mode:"rust", file:"main.rs" },
+{ id: 74, name:"Kotlin", mode:"kotlin", file:"Main.kt" },
+{ id: 60, name:"Go", mode:"go", file:"main.go" },
+{ id: 68, name:"PHP", mode:"php", file:"main.php" },
+{ id: 85, name:"Perl", mode:"perl", file:"main.pl" },
+{ id: 83, name:"Swift", mode:"swift", file:"main.swift" },
+{ id: 78, name:"Scala", mode:"scala", file:"Main.scala" },
+{ id: 80, name:"R", mode:"r", file:"main.r" },
+{ id: 81, name:"Haskell", mode:"haskell", file:"main.hs" },
+{ id: 43, name:"Plain Text", mode:"plaintext", file:"main.txt" }
+];
+
+/* =========================
 CODE TEMPLATES
 ========================= */
 
 const templates = {
 
 java:`public class Main {
-
     public static void main(String[] args){
-
         System.out.println("Hello World");
-
     }
-
 }`,
 
 python:`print("Hello World")`,
 
 c:`#include<stdio.h>
-
 int main(){
-
     printf("Hello World");
-
     return 0;
-
 }`,
 
 cpp:`#include<iostream>
 using namespace std;
 
 int main(){
-
     cout<<"Hello World";
-
     return 0;
+}`,
 
-}`
+javascript:`console.log("Hello World");`
+
 };
+
+/* =========================
+FILL LANGUAGE DROPDOWN
+========================= */
+
+languages.forEach(lang=>{
+const option=document.createElement("option");
+option.value=lang.id;
+option.textContent=lang.name;
+languageSelect.appendChild(option);
+});
 
 /* =========================
 MONACO EDITOR
@@ -67,23 +94,13 @@ fontSize:14
 
 });
 
-/* set initial filename */
-
 updateFileName();
-
-/* language switch */
 
 languageSelect.addEventListener("change",changeLanguage);
 
-/* detect typing */
-
 editor.onDidChangeModelContent(function(){
-
 updateFileName();
-
 });
-
-/* CTRL + ENTER RUN */
 
 editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, function () {
 runCode();
@@ -97,59 +114,36 @@ LANGUAGE CHANGE
 
 function changeLanguage(){
 
-const lang = languageSelect.value;
+const id = parseInt(languageSelect.value);
 
-monaco.editor.setModelLanguage(editor.getModel(),lang);
+const lang = languages.find(l=>l.id===id);
 
-editor.setValue(templates[lang]);
+if(!lang) return;
+
+monaco.editor.setModelLanguage(editor.getModel(),lang.mode);
+
+if(templates[lang.mode]){
+editor.setValue(templates[lang.mode]);
+}
 
 updateFileName();
 
 }
 
 /* =========================
-FILE NAME LOGIC
+FILENAME UPDATE
 ========================= */
 
 function updateFileName(){
 
 if(!editor) return;
 
-const lang = languageSelect.value;
+const id = parseInt(languageSelect.value);
+const lang = languages.find(l=>l.id===id);
 
-const code = editor.getValue();
+if(!lang) return;
 
-/* JAVA dynamic filename */
-
-if(lang==="java"){
-
-const match = code.match(/public\s+class\s+([A-Za-z0-9_]+)/);
-
-if(match){
-
-fileNameBox.textContent = match[1] + ".java";
-
-}else{
-
-fileNameBox.textContent = "Main.java";
-
-}
-
-}
-
-/* STATIC FILENAMES */
-
-if(lang==="python"){
-fileNameBox.textContent="main.py";
-}
-
-if(lang==="c"){
-fileNameBox.textContent="main.c";
-}
-
-if(lang==="cpp"){
-fileNameBox.textContent="main.cpp";
-}
+fileNameBox.textContent = lang.file;
 
 }
 
@@ -175,15 +169,13 @@ headers:{
 
 body:JSON.stringify({
 
-language:languageSelect.value,
+language_id:parseInt(languageSelect.value),
 code:editor.getValue(),
 input:inputBox.value
 
 })
 
 });
-
-/* If server still waking */
 
 if(!res.ok){
 throw new Error("Server not ready");
