@@ -191,7 +191,7 @@ outputBox.scrollTop = outputBox.scrollHeight;
 
 }catch(err){
 
-outputBox.textContent="❌ Server Error";
+outputBox.textContent="⚠️ Server waking up... Please wait 30 seconds and try again.";
 
 }
 
